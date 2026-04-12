@@ -5,6 +5,7 @@ export interface ToeicQuestion {
   part: ToeicPart;
   passage?: string;
   scenario?: string;
+  imageUrl?: string;
   questionText: string;
   choices: { A: string; B: string; C: string; D: string };
   correctAnswer: "A" | "B" | "C" | "D";

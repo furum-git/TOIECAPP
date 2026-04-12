@@ -47,7 +47,7 @@ export default function ChoiceButton({
       >
         {label}
       </span>
-      <span className="mt-0.5">{text}</span>
+      <span className="mt-0.5 text-gray-900 font-medium">{text}</span>
     </button>
   );
 }

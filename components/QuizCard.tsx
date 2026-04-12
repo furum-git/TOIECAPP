@@ -3,6 +3,24 @@
 import { useState } from "react";
 import { ToeicQuestion, UserAnswer } from "@/lib/types";
 import ChoiceButton from "./ChoiceButton";
+import AudioPlayer from "./AudioPlayer";
+
+const LISTENING_PARTS = [1, 2, 3, 4];
+
+function getListeningText(question: ToeicQuestion): string {
+  // Part 1: 選択肢を読み上げ（実際のTOEICに合わせて）
+  if (question.part === 1) {
+    const { A, B, C, D } = question.choices;
+    return `A. ${A}  B. ${B}  C. ${C}  D. ${D}`;
+  }
+  // Part 2: 質問文を読み上げ
+  if (question.part === 2) {
+    const { A, B, C } = question.choices;
+    return `${question.questionText}  A. ${A}  B. ${B}  C. ${C}`;
+  }
+  // Part 3, 4: 会話・説明文を読み上げ
+  return question.passage ?? question.questionText;
+}
 
 interface Props {
   question: ToeicQuestion;
@@ -54,7 +72,26 @@ export default function QuizCard({
         </span>
       </div>
 
-      {question.scenario && (
+      {LISTENING_PARTS.includes(question.part) && (
+        <AudioPlayer
+          key={question.id}
+          text={getListeningText(question)}
+          autoPlay={true}
+        />
+      )}
+
+      {question.part === 1 && question.imageUrl && (
+        <div className="mb-4">
+          <img
+            src={question.imageUrl}
+            alt="TOEIC Part 1 photo"
+            className="w-full rounded-xl object-cover"
+            style={{ maxHeight: 320 }}
+          />
+        </div>
+      )}
+
+      {question.scenario && question.part !== 1 && (
         <p className="mb-3 rounded-lg bg-yellow-50 p-3 text-sm text-gray-700 border border-yellow-200">
           <span className="font-semibold">状況: </span>
           {question.scenario}
