@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PartSelector from "@/components/PartSelector";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import VocabQuizLoader from "@/components/VocabQuizLoader";
 import { ToeicPart } from "@/lib/types";
 
 const COUNT_OPTIONS = [3, 5, 10];
@@ -26,7 +26,7 @@ export default function Home() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         part: selectedPart,
-        count: [6, 7].includes(selectedPart) ? undefined : count,
+        count: [6, 7].includes(selectedPart) ? undefined : [3, 4].includes(selectedPart) ? 3 : count,
         docType: selectedPart === 7 ? docType : undefined,
       }),
     });
@@ -42,7 +42,7 @@ export default function Home() {
     router.push(`/quiz/${selectedPart}`);
   }
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) return <VocabQuizLoader />;
 
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-12">
@@ -59,7 +59,7 @@ export default function Home() {
           <PartSelector selectedPart={selectedPart} onSelect={setSelectedPart} />
         </section>
 
-        {selectedPart && ![6, 7].includes(selectedPart) && (
+        {selectedPart && ![3, 4, 6, 7].includes(selectedPart) && (
           <section className="mb-6">
             <h2 className="mb-3 font-semibold text-gray-700">問題数</h2>
             <div className="flex gap-3">

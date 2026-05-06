@@ -3,6 +3,7 @@
 interface Props {
   label: "A" | "B" | "C" | "D";
   text: string;
+  subText?: string;
   selected: boolean;
   correct?: boolean;
   wrong?: boolean;
@@ -13,6 +14,7 @@ interface Props {
 export default function ChoiceButton({
   label,
   text,
+  subText,
   selected,
   correct,
   wrong,
@@ -20,7 +22,7 @@ export default function ChoiceButton({
   onClick,
 }: Props) {
   let className =
-    "flex w-full items-start gap-3 rounded-lg border-2 p-3 text-left transition-all ";
+    "flex w-full items-center gap-3 rounded-lg border-2 p-3 text-left transition-all ";
 
   if (correct) {
     className += "border-green-500 bg-green-50";
@@ -47,7 +49,12 @@ export default function ChoiceButton({
       >
         {label}
       </span>
-      <span className="mt-0.5 text-gray-900 font-medium">{text}</span>
+      {text && (
+        <span className="flex flex-col">
+          <span className="text-gray-900 font-medium">{text}</span>
+          {subText && <span className="text-xs text-gray-500 mt-0.5">{subText}</span>}
+        </span>
+      )}
     </button>
   );
 }
